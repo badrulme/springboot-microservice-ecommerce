@@ -63,7 +63,8 @@ public class ProductService {
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .build();
-
-        return getProduct(repository.save(product));
+        product = repository.save(product);
+        log.info("product created: {}", product);
+        return getProduct(product);
     }
 }

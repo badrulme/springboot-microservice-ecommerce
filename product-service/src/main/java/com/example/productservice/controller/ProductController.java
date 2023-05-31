@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("products")
+@RequestMapping("api/products")
 public class ProductController {
 
     private final ProductService service;
@@ -29,19 +28,20 @@ public class ProductController {
         return new ResponseEntity<>(service.getProducts(), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<ProductResponse> getProduct(@RequestParam String id) {
+    @GetMapping("{id}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable String id) {
         return new ResponseEntity<>(service.getProduct(id), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<ProductResponse> save(@RequestBody ProductRequest request) {
-        return new ResponseEntity<>(service.save(request), HttpStatus.OK);
+        return new ResponseEntity<>(service.save(request), HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("{id}")
     public ResponseEntity<ProductResponse> save(@RequestBody ProductRequest request,
                                                 @PathVariable String id) {
         return new ResponseEntity<>(service.update(request, id), HttpStatus.OK);
     }
+    
 }
