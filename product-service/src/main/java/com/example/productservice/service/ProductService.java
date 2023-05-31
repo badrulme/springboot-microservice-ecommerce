@@ -37,28 +37,33 @@ public class ProductService {
         return mapToProductResponse(getProductEntity(id));
     }
 
+    public ProductResponse getProduct(Product product) {
+        return mapToProductResponse(product);
+    }
+
     public Product getProductEntity(String id) {
         return repository.findById(id).orElseThrow();
 
     }
 
-    //    public Product update(ProductRequest request, String id) {
-//        Product product = getProduct(id);
-//         product = product
-//                .name(request.getName())
-//                .description(request.getDescription())
-//                .price(request.getPrice())
-//                .build();
-//
-//        return repository.save(product);
-//    }
-    public Product save(ProductRequest request) {
+    public ProductResponse update(ProductRequest request, String id) {
+
+        Product product = getProductEntity(id);
+
+        product.setName(request.getName());
+        product.setDescription(request.getDescription());
+        product.setPrice(request.getPrice());
+
+        return getProduct(repository.save(product));
+    }
+
+    public ProductResponse save(ProductRequest request) {
         Product product = Product.builder()
                 .name(request.getName())
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .build();
 
-        return repository.save(product);
+        return getProduct(repository.save(product));
     }
 }
