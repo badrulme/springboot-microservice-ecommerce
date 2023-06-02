@@ -5,6 +5,7 @@ import com.example.orderservice.entity.OrderLineItemEntity;
 import com.example.orderservice.model.OrderLineItemRequest;
 import com.example.orderservice.model.OrderRequest;
 import com.example.orderservice.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class OrderService {
 
     private final OrderRepository repository;
 
+    @Transactional
     public void placeOrder(OrderRequest request) {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setOrderNumber(UUID.randomUUID().toString());
