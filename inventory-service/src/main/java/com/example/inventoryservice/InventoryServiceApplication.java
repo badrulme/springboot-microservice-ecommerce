@@ -14,14 +14,14 @@ public class InventoryServiceApplication {
 		SpringApplication.run(InventoryServiceApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner loadData(InventoryRepository repository) {
-		return args ->{
-			InventoryEntity entity1 = new InventoryEntity(null, "iphone_13", 100);
-			InventoryEntity entity2 = new InventoryEntity(null, "iphone_13_red", 0);
-
-			repository.save(entity1);
-			repository.save(entity2);
-		};
-	}
+//	@Bean
+//	public CommandLineRunner loadData(InventoryRepository repository) {
+//		return args ->{
+//			InventoryEntity entity1 = new InventoryEntity(null, "iphone_13", 100);
+//			InventoryEntity entity2 = new InventoryEntity(null, "iphone_13_red", 0);
+//
+//			repository.save(entity1);
+//			repository.save(entity2);
+//		};
+//	}
 }
