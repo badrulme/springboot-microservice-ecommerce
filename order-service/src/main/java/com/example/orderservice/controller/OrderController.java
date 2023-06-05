@@ -23,7 +23,7 @@ public class OrderController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public String placeOrder(@RequestBody OrderRequest request) {
+    public String placeOrder(@RequestBody OrderRequest request) throws IllegalAccessException {
         orderService.placeOrder(request);
         return "OrderEntity placed successfully";
     }

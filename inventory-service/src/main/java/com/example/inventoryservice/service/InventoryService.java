@@ -1,9 +1,12 @@
 package com.example.inventoryservice.service;
 
+import com.example.inventoryservice.model.InventoryResponse;
 import com.example.inventoryservice.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -14,5 +17,14 @@ public class InventoryService {
 
     public boolean isInStock(String skuCode) {
         return repository.existsBySkuCode(skuCode);
+    }
+
+    public List<InventoryResponse> isInStock(List<String> skuCodes) {
+        return repository.findAllBySkuCodeIn(skuCodes).stream().map(inventoryEntity ->
+            InventoryResponse.builder()
+                    .skuCode(inventoryEntity.getSkuCode())
+                    .isInStock(inventoryEntity.getQuantity() > 0)
+                    .build()
+        ).toList();
     }
 }
