@@ -32,19 +32,9 @@ dependencies {
 	testImplementation('org.testcontainers:mongodb') //no version specified
 	testImplementation "org.testcontainers:junit-jupiter"
 
-
+	implementation platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-ext {
-	set('springCloudVersion', "2022.0.3")
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
 }
