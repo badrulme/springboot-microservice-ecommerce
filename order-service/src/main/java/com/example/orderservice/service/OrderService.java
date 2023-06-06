@@ -21,7 +21,7 @@ public class OrderService {
 
     private final OrderRepository repository;
 
-    private final WebClient webClient;
+    private final WebClient.Builder webClient;
 
     @Transactional
     public void placeOrder(OrderRequest request) throws IllegalAccessException {
@@ -36,8 +36,8 @@ public class OrderService {
                 .map(OrderLineItemEntity::getSkuCode)
                 .toList();
 
-        InventoryResponse[] result = webClient.get()
-                .uri("http://localhost:8082/api/inventories",
+        InventoryResponse[] result = webClient.build().get()
+                .uri("http://inventory-service/api/inventories",
                         uriBuilder -> uriBuilder.queryParam("skuCodes", skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)
