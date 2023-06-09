@@ -24,7 +24,7 @@ public class OrderService {
     private final WebClient.Builder webClient;
 
     @Transactional
-    public void placeOrder(OrderRequest request) throws IllegalAccessException {
+    public String placeOrder(OrderRequest request) throws IllegalAccessException {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setOrderNumber(UUID.randomUUID().toString());
 
@@ -48,8 +48,9 @@ public class OrderService {
 
         if (allProductsInStock) {
             repository.save(orderEntity);
+            return "OrderEntity placed successfully";
         } else {
-            throw new IllegalAccessException("Product is not in stock, pleaes try again");
+            throw new IllegalAccessException("Product is not in stock, please try again");
         }
     }
 

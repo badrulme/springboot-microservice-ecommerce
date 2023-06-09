@@ -13,4 +13,4 @@ spring:
     name: product-service
 
 server:
-  port: 8084
+  port: 8082
