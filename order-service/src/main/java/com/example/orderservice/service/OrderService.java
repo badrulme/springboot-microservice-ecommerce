@@ -2,12 +2,14 @@ package com.example.orderservice.service;
 
 import com.example.orderservice.entity.OrderEntity;
 import com.example.orderservice.entity.OrderLineItemEntity;
+import com.example.orderservice.event.OrderPlaceEvent;
 import com.example.orderservice.model.InventoryResponse;
 import com.example.orderservice.model.OrderLineItemRequest;
 import com.example.orderservice.model.OrderRequest;
 import com.example.orderservice.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -22,6 +24,8 @@ public class OrderService {
     private final OrderRepository repository;
 
     private final WebClient.Builder webClient;
+
+    private final KafkaTemplate<String, OrderPlaceEvent> kafkaTemplate;
 
     @Transactional
     public String placeOrder(OrderRequest request) throws IllegalAccessException {
@@ -48,6 +52,8 @@ public class OrderService {
 
         if (allProductsInStock) {
             repository.save(orderEntity);
+            kafkaTemplate.send("notificationTopic",
+                    new OrderPlaceEvent(orderEntity.getOrderNumber()));
             return "OrderEntity placed successfully";
         } else {
             throw new IllegalAccessException("Product is not in stock, please try again");
